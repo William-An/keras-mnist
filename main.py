@@ -2,6 +2,8 @@
 from keras.datasets import mnist
 from keras.layers import Conv2D, MaxPool2D, Dense, Flatten, Input, Reshape
 from keras import Model
+from matplotlib import pyplot as plt
+import numpy as np
 
 # Constants definition
 numClasses = 10
@@ -35,9 +37,18 @@ model.compile(loss='sparse_categorical_crossentropy',
               metrics=['accuracy'])
 
 # Train model
-model.fit(x_train, y_train, epochs=5, batch_size=32)
+model.fit(x_train, y_train, epochs=1, batch_size=32)
 
 # Evaluate model
 loss = model.evaluate(x_test, y_test, batch_size=32)
-print(loss)
-print("Loss: %.4f\tAccuracy: %.4f" % loss)
+print('Loss: %.4f\tAccuracy: %.4f' % tuple(loss))
+
+# Showing prediction result
+test_data = np.reshape(x_test[0], (1, 28, 28))
+prediction = model.predict(test_data)
+prediction = np.argmax(prediction)
+
+print('Prediction result:', prediction)
+test_data = np.reshape(x_test[0], (28, 28))
+plt.imshow(test_data)
+plt.show()
